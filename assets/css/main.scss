@@ -1,0 +1,40 @@
+$breakList: (
+    'phone': (0px, 768px),
+    'pad': (769px, 1280px),
+    'web': (1281px, 99999px)
+);
+
+@mixin fitter($breakName) {
+    $currentBreak: map-get($breakList, $breakName);
+    $minPx: nth($currentBreak, 1);
+    $maxPx: nth($currentBreak, 2);
+
+    @media (min-width:$minPx) and (max-width: $maxPx) {
+        @content;
+    }
+}
+
+$activeColor: #698fe0;
+
+html,
+body {
+    --padd: 10%;
+    --boxShadow1: #bfc7d8;
+    --boxShadow2: #ffffff;
+    --ngBg1: #ebebf3;
+    --ngBg2: #dbdbdd;
+    --alertColor: #ffffff;
+    --borColor: #dddddd;
+    --cttBRadius: 22px;
+    color: #858188;
+}
+
+@mixin defaultNT($size: 2px, $shadow: 6px) {
+    box-shadow: $size $size $shadow var(--boxShadow1),
+        -#{$size} -#{$size} $shadow var(--boxShadow2);
+}
+
+@mixin inserNT() {
+    box-shadow: inset 2px 2px 6px var(--boxShadow1),
+        inset -2px -2px 6px var(--boxShadow2);
+}

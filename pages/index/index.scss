@@ -1,0 +1,648 @@
+.home {
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    user-select: none;
+
+    @include fitter('phone') {
+        --padd: 5%;
+    }
+
+    &::after {
+        content: "";
+        width: 100%;
+        position: fixed;
+        top: -2px;
+        left: 0;
+        height: 4px;
+        background: var(--ngBg1);
+        z-index: 9;
+        display: block;
+    }
+
+    @include fitter('phone') {
+        padding: 0;
+    }
+
+    &_alert {
+        display: flex;
+        text-shadow: 0 0 20px darken($activeColor, 10);
+        color: var(--alertColor);
+        font-weight: 800;
+        margin: 10% var(--padd) 0;
+
+        @include fitter('web') {
+            font-size: 40px;
+            justify-content: flex-end;
+        }
+
+        @include fitter('pad') {
+            font-size: 30px;
+            justify-content: flex-end;
+        }
+
+        @include fitter('phone') {
+            font-size: 30px;
+            justify-content: center;
+        }
+    }
+
+    &_user {
+        margin: 70px var(--padd) 0;
+        border-radius: var(--cttBRadius);
+        background: transparent;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        @include defaultNT();
+
+        @include fitter('phone') {
+            font-size: 30px;
+            flex-flow: column;
+            justify-content: center;
+        }
+
+        &_dir {
+            width: 25%;
+            margin-right: 10%;
+
+            @include fitter('pad') {
+                width: 0;
+                margin-right: 0;
+            }
+
+        }
+
+        &_img {
+            width: 25%;
+            aspect-ratio: 1 / 1;
+            border-radius: 42px;
+            position: absolute;
+            bottom: 20%;
+            left: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 4px solid var(--borColor);
+            @include defaultNT();
+
+            @include fitter('pad') {
+                width: 30%;
+                position: relative;
+                bottom: 0;
+                left: 0;
+            }
+
+            @include fitter('phone') {
+                width: 100%;
+                position: relative;
+                bottom: 0;
+                left: 0;
+                margin-bottom: 12px;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                pointer-events: none;
+            }
+        }
+
+        &_text {
+            width: 30%;
+            display: flex;
+            flex-flow: column;
+            gap: 16px;
+            margin-right: 20px;
+
+            @include fitter('pad') {
+                margin-right: 0;
+                margin: 0 auto;
+            }
+
+            @include fitter('phone') {
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            &_item {
+                border-radius: 44px;
+                background: transparent;
+                padding: 8px 0;
+                text-align: center;
+                @include defaultNT();
+            }
+        }
+
+        ::v-deep &_time {
+            width: 20%;
+            aspect-ratio: 1 / 1;
+            border: 4px solid var(--ngBg1);
+            border-radius: 50%;
+            margin-right: 30px;
+            position: relative;
+            @include defaultNT();
+
+            @include fitter('pad') {
+                margin-right: 0;
+            }
+
+            @include fitter('phone') {
+                margin-right: 0;
+                margin-top: 20px;
+                width: 90%;
+            }
+
+            &_line {
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: 100%;
+                    height: 2px;
+                    position: absolute;
+                    top: calc(50% - 1px);
+                    left: 0;
+                    background: linear-gradient(90deg, darken($activeColor, 10) 0 4%, transparent 4% 96%, darken($activeColor, 10) 96% 100%);
+                }
+
+                &::after {
+                    content: '';
+                    display: block;
+                    width: 2px;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: calc(50% - 1px);
+                    background: linear-gradient(0deg, darken($activeColor, 10) 0 4%, transparent 4% 96%, darken($activeColor, 10) 96% 100%);
+                }
+            }
+
+            &_zhong {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: transparent;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                @include inserNT();
+
+                .circle {
+                    width: 5%;
+                    aspect-ratio: 1/1;
+                    border-radius: 50%;
+                    background: linear-gradient(145deg, #fff, $activeColor);
+                    position: relative;
+                    z-index: 4;
+                    @include defaultNT();
+                }
+
+                .once {
+                    width: 10px;
+                    height: 20%;
+                    border-radius: 99px;
+                    background-color: lighten($activeColor, 10);
+                    position: absolute;
+                    bottom: 50%;
+                    left: calc(50% - 5px);
+                    z-index: 1;
+                    transform-origin: bottom;
+                }
+
+                .two {
+                    width: 6px;
+                    height: 30%;
+                    border-radius: 99px;
+                    background-color: lighten($activeColor, 20);
+                    position: absolute;
+                    bottom: 50%;
+                    left: calc(50% - 3px);
+                    z-index: 2;
+                    transform-origin: bottom;
+                }
+
+                .therr {
+                    width: 4px;
+                    height: 40%;
+                    border-radius: 99px;
+                    background-color: darken($activeColor, 20);
+                    position: absolute;
+                    bottom: 50%;
+                    left: calc(50% - 2px);
+                    z-index: 3;
+                    transform-origin: bottom;
+                }
+
+                .text {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 5;
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 20px;
+                }
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: 65%;
+                    height: 65%;
+                    position: absolute;
+                    top: 17.5%;
+                    left: 17.5%;
+                    border-radius: 50%;
+                    @include inserNT();
+                }
+            }
+        }
+    }
+
+    & ::v-deep &_info {
+        margin: 30px var(--padd) 0;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 5%;
+        line-height: 1.5;
+
+        @include fitter('web') {
+            flex-flow: row wrap;
+        }
+
+        &_left,
+        &_right {
+            flex: 1;
+            border-radius: var(--cttBRadius);
+            padding: 12px;
+            @include defaultNT();
+
+            @include fitter('pad') {
+                width: calc(100% - 24px);
+            }
+
+            @include fitter('phone') {
+                width: calc(100% - 24px);
+                margin: 0;
+            }
+
+            .tab {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+
+                &_item {
+                    width: 30%;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 10px;
+                    cursor: pointer;
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                        margin-right: 4px;
+                    }
+                }
+
+                .active {
+                    @include inserNT();
+                }
+
+                @include fitter('phone') {
+                    font-size: 20px;
+                }
+            }
+
+            .content {
+                min-height: 40px;
+                margin: 12px 1% 0;
+                border-radius: 10px;
+                padding: 10px;
+                font-size: 16px;
+                color: #888;
+                @include inserNT();
+
+                @include fitter('web') {
+                    margin: 12px 6px 0;
+                }
+
+                pre {
+                    margin: 0;
+                    display: inline;
+                }
+            }
+        }
+
+        &_left {
+            .content {
+
+                &_user {
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+
+                    >div {
+                        width: 40%;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        font-weight: 800;
+
+                        >pre {
+                            width: 70%;
+                            font-weight: 400;
+                        }
+
+                        @include fitter('phone') {
+                            width: 100%;
+                            flex-flow: column;
+
+                            >pre {
+                                width: 100%;
+                                display: block;
+                                white-space: break-spaces;
+                            }
+                        }
+                    }
+                }
+
+                &_skill {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                &_ing {
+
+                    div {
+                        display: flex;
+                        justify-content: space-between;
+
+                        @include fitter ('phone') {
+                            flex-flow: column;
+                        }
+                    }
+
+                    div>p:nth-child(1) {
+                        font-weight: 800;
+                    }
+
+                    div>p:nth-child(2) {
+                        font-size: 14px;
+                        line-height: 1.8;
+
+                    }
+                }
+            }
+        }
+
+        &_right {
+            margin-top: 20px;
+
+            @include fitter('web') {
+                margin-top: 0;
+            }
+
+            @include fitter('phone') {
+                width: calc(100% - 24px);
+            }
+
+            .tab {
+                &_item {
+                    width: 25%;
+                }
+            }
+
+            .content {
+                box-shadow: none;
+                margin: 12px 0 0;
+                padding: 0;
+
+                &_o {
+                    border-radius: 10px;
+                    padding: 10px;
+                    @include inserNT();
+
+                    &.none:hover {
+                        cursor: default;
+                        color: inherit;
+                    }
+                }
+
+                &_chat {
+                    &_tab {
+                        display: flex;
+                        flex-flow: row wrap;
+                        gap: 10px;
+
+                        &_item {
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 10px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+                            @include defaultNT();
+
+                            img {
+                                width: 50%;
+                                height: 50%;
+                            }
+
+                            &.active {
+                                color: inherit;
+                                @include inserNT();
+                            }
+                        }
+                    }
+
+                    img {
+                        margin: 10px 0;
+                        width: 130px;
+                        aspect-ratio: 1/1;
+                        border-radius: 10px;
+                    }
+                }
+
+                &_work {
+                    >div {
+                        display: flex;
+                        justify-content: space-between;
+
+                        >span:first-child {
+                            display: inline-block;
+                            flex: 1;
+                            max-width: 300px;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                        }
+
+                        >span:last-child {
+                            margin: 0 12px;
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                            color: var(--activeColor);
+                        }
+                    }
+
+                    >.content_o {
+                        margin-bottom: 12px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+
+                &_url,
+                &_demo {
+                    >div {
+
+                        .url {
+                            word-wrap: break-word;
+                        }
+
+                        img {
+                            width: 80px;
+                            height: 80px;
+                        }
+
+                        span:first-child {
+                            font-weight: 800;
+                        }
+
+                        .url:hover {
+                            color: var(--activeColor);
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    & ::v-deep &_message {
+        margin: 20px var(--padd) 20px;
+        padding: 10px;
+        border-radius: var(--cttBRadius);
+        @include defaultNT();
+
+        &_content {
+            min-height: 100px;
+            border-radius: calc(var(--cttBRadius) - 4px);
+            padding: 12px;
+            @include inserNT();
+
+            &_item {
+                font-size: 12px;
+                border-top: 1px solid var(--borColor);
+                padding: 12px 0;
+
+                >div {
+                    line-height: 1.5;
+
+                    &:last-child {
+                        color: #888;
+                        text-align: right;
+                    }
+
+                    &:nth-child(1) {
+                        font-size: 14x;
+                    }
+                }
+
+                &:first-child {
+                    border: 0;
+                }
+
+                .img_list {
+                    display: flex;
+                    flex-flow: row wrap;
+                    margin: 12px 0 0;
+                    gap: 10px;
+
+                    >div {
+                        width: 100px;
+                        aspect-ratio: 1/1;
+                        border-radius: 10px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 100%;
+                            object-fit: 1 / 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .menu {
+        height: calc(40px * 3 + 12px * 2);
+        position: fixed;
+        bottom: 3vh;
+        right: 20px;
+        z-index: 9;
+        font-size: 15px;
+        overflow: hidden;
+
+        >div {
+            width: 40px;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--boxShadow1) inset;
+            margin-bottom: 12px;
+            opacity: 1;
+            transition: opacity 0.5s;
+            cursor: pointer;
+
+            &:active {
+                box-shadow: 0 0 8px var(--ngBg2) inset;
+                color: var(--ngBg2);
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        &.isHide {
+            .menu_item {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        .menu_change {
+            background-color: var(--bgColor);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 0;
+        }
+    }
+}

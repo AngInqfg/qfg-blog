@@ -1,0 +1,42 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "compilerOptions": {
+      "target": "ES2020",
+      "useDefineForClassFields": true,
+      "module": "ESNext",
+      "lib": [
+        "ES2020",
+        "ES2021",
+        "DOM",
+        "DOM.Iterable"
+      ],
+      "skipLibCheck": true,
+      /* Bundler mode */
+      "moduleResolution": "node",
+      "allowImportingTsExtensions": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      /* Linting */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": ".",
+      "paths": {
+        "@/*": [
+          "*"
+        ]
+      },
+      "noImplicitAny": false,
+    },
+    "include": [
+      "vite.config.ts",
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.vue"
+    ]
+  }
+}
