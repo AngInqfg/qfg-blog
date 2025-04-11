@@ -9,6 +9,8 @@ const {
   VITE_NUXT_CHAT_URL, VITE_NUXT_CHAT_NAME,
   VITE_NUXT_YDTC_NAME, VITE_NUXT_YDTC_URL
 }: envType = process.env
+console.log('=======================',VITE_NUXT_BASE_NAME, '=========================');
+
 export default defineNuxtConfig({
   devtools: { enabled: false },
   vite: {
@@ -48,8 +50,17 @@ export default defineNuxtConfig({
   nitro: {
     routeRules: {
       // 代理 `/api/**` 到目标服务器
-      [`${VITE_NUXT_BASE_NAME}/**`]: {
-        proxy: `${VITE_NUXT_BASE_URL}/**`
+      // [`${VITE_NUXT_BASE_NAME}/**`]: {
+      //   proxy: `${VITE_NUXT_BASE_URL}/**`
+      // },
+      '/BASE': {
+        proxy: `https://fc-mp-d2710277-d07d-462e-99b0-59276137c9a6.next.bspapp.com/qfg-blog/**`
+      },
+      [`${VITE_NUXT_YDTC_NAME}/**`]: {
+        proxy: `${VITE_NUXT_YDTC_URL}/**`
+      },
+      [`${VITE_NUXT_CHAT_NAME}/**`]: {
+        proxy: `${VITE_NUXT_CHAT_URL}/**`
       }
     }
   },
