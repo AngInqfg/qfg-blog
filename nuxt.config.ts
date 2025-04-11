@@ -20,8 +20,9 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "~/assets/css/main.scss" as *;'
-        }
+          additionalData: '@use "~/assets/css/main.scss" as *;',
+          implementation: 'sass-embedded'
+        } as any
       }
     },
     server: {
