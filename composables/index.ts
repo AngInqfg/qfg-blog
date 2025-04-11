@@ -13,6 +13,14 @@ export const getDiffYear = (time: any) => {
     return { y: years, m: months, d: days }
 }
 /**
+ * 时间转换
+ * @returns {y: years, m: months, d: days}
+ */
+export const forMat = (time: any, format="YYYY-MM-DD") => {
+    const val = Dayjs(time).format(format)
+    return val
+}
+/**
  * 连续点击
  */
 let lastClickTime = 0;

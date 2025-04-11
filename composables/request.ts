@@ -13,28 +13,17 @@ const {
  * @returns 
  */
 export const request = async <T>(url: string, query?: any, option?: any) => {
-	let res = null
-	if (option?.sc) {
-		res = await useFetch(VITE_NUXT_BASE_NAME + url, {
-			method: 'POST',
-			body: query,
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			cache: false,
-			...option
-		});
-	} else {
-		res = await useFetch(VITE_NUXT_BASE_URL + url, {
-			method: 'POST',
-			body: query,
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			cache: false,
-			...option
-		});
-	}
+	const isServer = import.meta.server
+	const urls = isServer ? VITE_NUXT_BASE_URL + url : VITE_NUXT_BASE_NAME + url;
+	
+	const res = await useFetch(urls, {
+		method: 'POST',
+		body: query,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		...option
+	});
 	if (res?.status.value === 'success') {
 		const { code, message, data } = res?.data.value as requestType<T>
 		return { code, message, data }

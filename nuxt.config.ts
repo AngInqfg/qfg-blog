@@ -4,7 +4,7 @@ import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 type envType = { [key: string]: any }
 const {
-  VITE_NUXT_NAME, VITE_NUXT_PORT,
+  VITE_NUXT_PORT,
   VITE_NUXT_BASE_NAME, VITE_NUXT_BASE_URL,
   VITE_NUXT_CHAT_URL, VITE_NUXT_CHAT_NAME,
   VITE_NUXT_YDTC_NAME, VITE_NUXT_YDTC_URL
@@ -45,6 +45,14 @@ export default defineNuxtConfig({
       },
     },
   },
+  nitro: {
+    routeRules: {
+      // 代理 `/api/**` 到目标服务器
+      [`${VITE_NUXT_BASE_NAME}/**`]: {
+        proxy: `${VITE_NUXT_BASE_URL}/**`
+      }
+    }
+  },
   devServer: {
     port: Number(VITE_NUXT_PORT || 3000),
     host: '0.0.0.0',
@@ -52,10 +60,5 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt'
   ],
-  runtimeConfig: {
-    public: {
-      EnvName: VITE_NUXT_NAME
-    }
-  },
   compatibilityDate: '2025-04-04'
 })

@@ -1,5 +1,5 @@
 <template>
-    <div class="chat_content" v-if="isClient">
+    <div class="chat_content">
         <div class="chat_content_head">
             <span>讯飞星火API 4.0Ultra</span>
             <span></span>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mask" v-if="isMask" @click="isMask = false"></div>
+            <div class="mask" v-show="isMask" @click="isMask = false"></div>
             <div class="chat_content_container_box">
                 <div class="chat_content_container_box_list" ref="listRef">
                     <div class="content" v-for="(item, index) in historyList" :key="index" :class="{
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="again_send" v-if="isAbout" @click="handleAngin">
+                <div class="again_send" v-show="isAbout" @click="handleAngin">
                     重新获取
                 </div>
                 <div class="chat_content_container_box_btn">
@@ -108,8 +108,6 @@ useSeoMeta({
     description: 'qinfugui讯飞星火Api测试4.0Ultra',
 })
 
-const isClient = process.client;
-
 const listEl = useTemplateRef<HTMLDivElement>('listRef')
 const menuList = ref<chatMenuType[]>([]) // 通讯栏
 const menuActive = ref<chatMenuType['id']>() // 选中的通讯栏
@@ -124,23 +122,25 @@ const isCreateMenu = ref<boolean>(false)
 // 获取菜单 然后根据菜单id获取history   
 // 每次发送后再把当前值重新保存进数据库
 // 再加一个清空菜单标签
-onMounted(async () => {
-    const res = await request<chatMenuType[]>('/getQfgBlogChatMenu', {}, { sc: true });
-    menuList.value = res?.data || []
-    if (menuList.value.length > 0) {
-        menuActive.value = menuList.value[menuList.value.length - 1].id
-        const res = await request<chatListType[]>('/getQfgBlogChatHistory', { id: menuActive.value }, { sc: true })
-        historyList.value = res?.data || []
-        userSendList.value = historyList.value.filter((n) => {
-            return n.role === 'user'
-        })
-        nextTick(() => {
-            if (listEl.value) {
-                listEl.value.scrollTop = listEl.value.scrollHeight
-            }
-        })
-    };
-})
+const { data: chatMenuData } = await useAsyncData('getQfgBlogChatMenuAsync', () =>
+    request<chatMenuType[]>('/getQfgBlogChatMenu')
+);
+menuList.value = chatMenuData.value?.data || []
+if (menuList.value.length > 0) {
+    menuActive.value = menuList.value[menuList.value.length - 1].id
+    const { data: chatHistoryData } = await useAsyncData('getQfgBlogChatHistoryAsync', () =>
+        request<chatListType[]>('/getQfgBlogChatHistory', { id: menuActive.value })
+    );
+    historyList.value = chatHistoryData.value?.data || []
+    userSendList.value = historyList.value.filter((n) => {
+        return n.role === 'user'
+    })
+    nextTick(() => {
+        if (listEl.value) {
+            listEl.value.scrollTop = listEl.value.scrollHeight
+        }
+    })
+};
 watch(() => menuActive.value, async (_new, _old) => {
     if (import.meta.client) {
         if (_new !== _old) {
@@ -157,8 +157,10 @@ const handleCheckoutMenu = async (e: number) => {
     isCreateMenu.value = false
     menuActive.value = e
     isMask.value = false
-    const res = await request<chatListType[]>('/getQfgBlogChatHistory', { id: e }, { sc: true })
-    historyList.value = res?.data || []
+    const { data: chatHistoryData } = await useAsyncData('getQfgBlogChatHistoryAsync', () =>
+        request<chatListType[]>('/getQfgBlogChatHistory', { id: e })
+    );
+    historyList.value = chatHistoryData.value?.data || []
     userSendList.value = historyList.value.filter((n) => {
         return n.role === 'user'
     })
@@ -179,13 +181,17 @@ async function handleCreate(bool?: boolean, title?: string) {
         title: title || '新窗口',
         id
     })
-    await request('/addQfgBlogChatMenu', { title: title || '新窗口', id }, { sc: true })
+    await useAsyncData('addQfgBlogChatMenuAsync', () =>
+        request('/addQfgBlogChatMenu', { title: title || '新窗口', id })
+    );
     await handleCheckoutMenu(id)
 }
 // 是否停止了
 watch(() => sendLoading.value, (_new) => {
     if (!_new) {
-        request('/setQfgBlogChatHistory', { list: historyList.value, id: menuActive.value }, { sc: true })
+        useAsyncData('setQfgBlogChatHistoryAsync', () =>
+            request('/setQfgBlogChatHistory', { list: historyList.value, id: menuActive.value })
+        );
     }
 })
 // 打开大的输入框
@@ -195,7 +201,9 @@ watch(() => isBigTextarea.value, (_new) => {
 })
 // 清空侧边栏
 const handleClearMenu = async () => {
-    await request('/clearQfgBlogChat', {}, { sc: true });
+    await useAsyncData('clearQfgBlogChatAsync', () =>
+        request('/clearQfgBlogChat')
+    );
     menuList.value = []
     historyList.value = []
     userSendList.value = []
@@ -216,7 +224,9 @@ const sendMessage = async (bool?: boolean) => {
         const item = menuList.value.find((n) => n.id === menuActive.value)
         if (item) {
             item.title = messageValue.value
-            await request('/updateQfgBlogChatTitle', {id: item.id, text: item.title }, { sc: true });
+            await useAsyncData('updateQfgBlogChatTitleAsync', () =>
+                request('/updateQfgBlogChatTitle', { id: item.id, text: item.title })
+            );
         };
     }
     if (bool) {
@@ -247,7 +257,9 @@ const sendMessage = async (bool?: boolean) => {
 const cancelRequest = async () => {
     isAbout.value = true
     sendLoading.value = false
-    controller.value.abort()
+    if (controller.value) {
+        controller.value.abort()
+    }
 }
 // 重新发送
 const handleAngin = () => {

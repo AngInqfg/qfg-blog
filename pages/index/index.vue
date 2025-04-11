@@ -1,5 +1,5 @@
 <template>
-    <div class="home" ref="homeRef" v-if="isClient && !loading">
+    <div class="home" ref="homeRef">
         <div class="home_alert">
             {{ data?.webNike }} {{ data?.webName }}
         </div>
@@ -35,27 +35,26 @@ import Time from './child/time.vue'
 import Info from './child/info.vue'
 import MsgC from './child/message.vue'
 import Dialog from '@/components/Dialog.vue'
-import { useStore } from '@/store';
 useSeoMeta({
     title: 'qinfugui',
     description: '个人用例',
     keywords: 'qinfugui,qfg'
 })
 
-const isClient = process.client;
-
-const store = useStore()
 const homeEl = useTemplateRef('homeRef')
 const dialogRef = ref()
 const isHide = ref<boolean>(false)
 const data = ref<InfoType>()
 const list = ref<listType[]>()
-const loading = ref<boolean>(true)
-const res1 = await request<InfoType>('/getQfgBlogInfo')
-data.value = res1.data
-const res2 = await request<listType[]>('/getQfgBlogMsgList')
-list.value = res2.data
 
+const { data: blogInfo } = await useAsyncData('blogInfo', () =>
+    request<InfoType>('/getQfgBlogInfo')
+);
+const { data: blogList } = await useAsyncData('blogList', () =>
+    request<listType[]>('/getQfgBlogMsgList')
+);
+data.value = blogInfo.value?.data;
+list.value = blogList.value?.data;
 const bigImage = ref('')
 const handleShow = (str: InfoType['avatar'] = '') => {
     bigImage.value = str
@@ -76,9 +75,6 @@ const handleChat = () => {
 const handleEdit = () => {
     navigateTo('/editInfo')
 }
-onBeforeMount(() => {
-    loading.value = false
-})
 </script>
 <style scoped lang="scss">
 @import './index.scss';

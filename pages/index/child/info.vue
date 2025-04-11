@@ -18,8 +18,9 @@
                     <div>教育：
                         <pre>{{ item?.school?.schoolName }}</pre>
                     </div>
-                    <div>
-                        <pre>{{ item?.school?.schoolStartDay }}-{{ item?.school?.schoolEndDay }}</pre>
+                    <div style="font-family: monospace; font-weight: 400;">
+                        {{ forMat(item?.school?.schoolStartDay, 'YYYY/MM') }} -
+                        {{ forMat(item?.school?.schoolEndDay, 'YYYY/MM') }}
                     </div>
                     <div>
                         <pre v-html="item?.describe?.join('\n')"></pre>
@@ -42,9 +43,11 @@
                         <p>{{ companyItem?.name }}</p>
                         <p>{{ companyItem?.position }} </p>
                         <p>
-                            {{ companyItem?.startTime }}
+                            {{ forMat(companyItem?.startTime, 'YYYY/MM') }}
                             -
-                            {{ companyItem?.endTime === '至今' ? Dayjs().format('YYYY.MM') : companyItem?.endTime }}
+                            {{
+                               companyItem?.endTime ? forMat(companyItem?.endTime, 'YYYY/MM') : '至今'
+                            }}
                         </p>
                     </div>
                 </div>

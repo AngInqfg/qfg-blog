@@ -1,5 +1,5 @@
 <template>
-    <div class="edit" v-if="isClient && !loading">
+    <div class="edit">
         <div class="edit_content">
             <div class="title">信息</div>
             <div class="info">
@@ -69,6 +69,7 @@
                     <input type="text" placeholder="公司" v-model="item.name">
                     <input type="text" placeholder="职位" v-model="item.position">
                     <input type="date" placeholder="开始时间" v-model="item.startTime">
+                    {{ item.startTime }}
                     <input type="date" placeholder="结束时间" v-model="item.endTime">
                     <div @click="handleRemove('company', idx)">-</div>
                 </div>
@@ -174,13 +175,10 @@ import Dialog from '@/components/Dialog.vue'
 type uploadKeyStr = 'avatar' | 'qqCode' | 'wxCode' | 'demoWxXcxUrl'
 type operListType = 'describe' | 'skill' | 'company'
 
-const isClient = process.client;
-
 const accept = " .png, .jpg, .jpeg, .PNG, .JPG, .JPEG"
 const uploadEl = useTemplateRef<HTMLInputElement>('uploadRef')
 
 const bigImage = ref<string>('')
-const loading = ref<boolean>(true)
 const dialogRef = ref()
 const handleShow = (str: InfoType['avatar'] = '') => {
     bigImage.value = str
@@ -292,21 +290,18 @@ const handleSubmit = async () => {
         handleGoBack()
     }
 }
-onBeforeMount(async () => {
-    if (import.meta.client) {
-        const res = await request<InfoType>('/getQfgBlogInfo', {}, { sc: true })
-        detail.value = {
-            ...res?.data,
-            skill: res?.data?.skill?.map((n) => {
-                return { value: n }
-            }) || [],
-            describe: res?.data?.skill?.map((n) => {
-                return { value: n }
-            }) || []
-        }
-        loading.value = false
-    }
-})
+const { data: blogInfo } = await useAsyncData('blogInfo', () =>
+    request<InfoType>('/getQfgBlogInfo')
+);
+detail.value = {
+    ...blogInfo.value?.data as InfoType,
+    skill: blogInfo.value?.data?.skill?.map((n) => {
+        return { value: n }
+    }) || [],
+    describe: blogInfo.value?.data?.skill?.map((n) => {
+        return { value: n }
+    }) || []
+}
 </script>
 <style scoped lang="scss">
 @import './index.scss';
