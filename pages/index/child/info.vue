@@ -4,7 +4,7 @@
             <div class="tab">
                 <div class="tab_item" v-for="item in myTabList" :key="item.value"
                     :class="{ active: myActive === item?.value }" @click="myActive = item?.value">
-                    <img v-if="item?.img" :src="item?.img"> {{ item?.label }}
+                    <img v-if="item?.img" :src="item?.img" loading="lazy" /> {{ item?.label }}
                 </div>
             </div>
             <div class="content">
@@ -26,12 +26,6 @@
                         <pre v-html="item?.describe?.join('\n')"></pre>
                     </div>
                     <div></div>
-                    <div>
-                        预览：
-                        <a style="font-weight: 400;" :href="item?.biographicalNotesUrl" target="_blank">
-                            {{ item?.biographicalNotesName }}
-                        </a>
-                    </div>
                 </div>
                 <div class="content_skill" v-show="myActive === 2">
                     <div v-for="(skillItem, index) in item?.skill" :key="`${index}skill`">
@@ -65,7 +59,7 @@
                     <div class="content_chat_tab">
                         <div class="content_chat_tab_item" v-for="item in chatTabList" :key="item.value"
                             :class="{ active: chatActive === item?.value }" @click="chatActive = item?.value">
-                            <img v-if="item?.img" :src="item?.img">
+                            <img v-if="item?.img" :src="item?.img"  loading="lazy" />
                         </div>
                     </div>
                     <div style="margin: 12px 0 0;font-size: 18px;">
@@ -78,12 +72,17 @@
                         <br>
                         <img v-if="[1, 2].includes(chatActive)"
                             @click="handleShow(chatActive === 1 ? item?.qqCode : item?.wxCode)"
-                            :src="chatActive === 1 ? item?.qqCode : item?.wxCode" />
+                            :src="chatActive === 1 ? item?.qqCode : item?.wxCode"  loading="lazy" />
                     </div>
                 </div>
                 <div class="content_work" v-show="otherActive === 2">
-                    <div class="content_o" @click="handleDownload('', item?.biographicalNotesWorkDownloadUrl)">
-                        {{ item?.biographicalNotesWorkDownloadName }}
+                    <div class="content_o" @click="handleDownload(item?.biographicalNotesWorkDownloadName, item?.biographicalNotesWorkDownloadUrl)">
+                        <span>
+                            {{ item?.biographicalNotesWorkDownloadName }}
+                        </span>
+                        <span>
+                            ↓
+                        </span>
                     </div>
                     <div class="content_o"
                         @click="handleDownload(item?.biographicalNotesPdfDownloadName, item?.biographicalNotesPdfDownloadUrl)">
@@ -106,12 +105,16 @@
                 </div>
                 <div class="content_o content_url" v-show="otherActive === 3">
                     <div>
-                        <span>CURRENT：</span>
+                        <span>后台：</span>
                         <span class="url">
                             <a :href="item?.currentUrl" target="_blank">
                                 当前链接 {{ item?.currentUrl }}
                             </a>
                         </span>
+                    </div>
+                    <div>
+                        <span>CURRENT：</span>
+                        <a target="_blank" :href="item?.demoCurrentUrl" class="url">{{ item?.demoCurrentUrl }}</a>
                     </div>
                     <div>
                         <span>SCDN：</span>
@@ -133,15 +136,19 @@
                 <div class="content_o content_demo" v-show="otherActive === 4">
                     <div>
                         <span>CURRENT：</span>
-                        <span class="url">{{ item?.demoCurrentUrl }}</span>
+                        <a target="_blank" :href="item?.demoCurrentUrl" class="url">{{ item?.demoCurrentUrl }}</a>
                     </div>
-                    <div @click="handleDownload('qfgDemoElectron', item?.demoElectronUrl)">
+                    <div>
+                        <span>后台：</span>
+                        <a target="_blank" :href="item?.currentUrl" class="url">{{ item?.currentUrl }}</a>
+                    </div>
+                    <div>
                         <span>ELECTRON：</span>
-                        <span class="url">{{ item?.demoElectronUrl }}↓</span>
+                        <a target="_blank" :href="item?.demoElectronUrl" class="url">{{ item?.demoElectronUrl }}</a>
                     </div>
                     <div @click="handleDownload('qfgDemoaPP', item?.demoAppUrl)">
                         <span>APP：</span>
-                        <span class="url">{{ item?.demoAppUrl }}↓</span>
+                        <a target="_blank" :href="item?.demoAppUrl" class="url">{{ item?.demoAppUrl }}</a>
                     </div>
                     <div style="display: flex;" @click="handleShow(item?.demoWxXcxUrl)">
                         <span>WEIXINXCX：</span>

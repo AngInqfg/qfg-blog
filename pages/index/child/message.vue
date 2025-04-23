@@ -7,10 +7,10 @@
                 <div class="img_list">
                     <div v-for="(imgChild, idx) in item?.imageList" :key="`${index}${idx}imgList`"
                         @click="handleShow(imgChild)">
-                        <img :src="imgChild">
+                        <img :src="imgChild"  loading="lazy" />
                     </div>
                 </div>
-                <div>{{ item?.createTime }}</div>
+                <div>{{ forMat(item?.createTime, 'YYYY/MM/DD') }}</div>
             </div>
             <div class="loading"></div>
         </div>

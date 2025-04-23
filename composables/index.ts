@@ -16,8 +16,9 @@ export const getDiffYear = (time: any) => {
  * 时间转换
  * @returns {y: years, m: months, d: days}
  */
-export const forMat = (time: any, format="YYYY-MM-DD") => {
-    const val = Dayjs(time).format(format)
+export const forMat = (time: any, format = "YYYY-MM-DD") => {
+    let t = new RegExp(/^\d+$/).test(time) ? Number(time) : time 
+    const val = Dayjs(t).format(format)
     return val
 }
 /**

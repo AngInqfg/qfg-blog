@@ -5,11 +5,11 @@
         </div>
         <div class="home_user">
             <div class="home_user_img" @click="handleShow(data?.avatar)">
-                <img :src="data?.avatar" />
+                <img :src="data?.avatar" loading="lazy" />
             </div>
             <div class="home_user_dir"></div>
             <div class="home_user_text">
-                <div class="home_user_text_item" @click="NumerousTimes(handleEdit, 500, 10)">{{ data?.name }}</div>
+                <div class="home_user_text_item">{{ data?.name }}</div>
                 <div class="home_user_text_item">{{ data?.nikeName }} | {{ data?.webNike }}</div>
                 <div class="home_user_text_item">{{ data?.city }}</div>
             </div>
@@ -72,9 +72,6 @@ const handleChat = () => {
     navigateTo('/chat')
 }
 
-const handleEdit = () => {
-    navigateTo('/editInfo')
-}
 </script>
 <style scoped lang="scss">
 @import './index.scss';
